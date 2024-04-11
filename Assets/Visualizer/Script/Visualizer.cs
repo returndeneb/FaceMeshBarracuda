@@ -64,6 +64,7 @@ public sealed class Visualizer : MonoBehaviour
         // Face view
         // Face mesh
         var fF = MathUtil.ScaleOffset(0.5f, math.float2(0.125f, -0.5f));
+        
         _material.SetBuffer("_Vertices", _pipeline.RefinedFaceVertexBuffer);
         _material.SetPass(0);
         Graphics.DrawMeshNow(_resources.faceMeshTemplate, fF);

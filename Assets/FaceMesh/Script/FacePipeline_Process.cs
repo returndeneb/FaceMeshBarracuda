@@ -1,4 +1,4 @@
-using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 using Unity.Mathematics;
 
@@ -11,14 +11,18 @@ namespace MediaPipe.FaceMesh {
 partial class FacePipeline
 {
     // Face/eye region trackers
-    FaceRegion _faceRegion = new FaceRegion();
-    EyeRegion _leyeRegion = new EyeRegion();
-    EyeRegion _reyeRegion = new EyeRegion(true);
-
+    FaceRegion _faceRegion = new();
+    EyeRegion _leyeRegion = new();
+    EyeRegion _reyeRegion = new();
+    
     // Vertex retrieval from the face landmark detector
     float4 GetFaceVertex(int index)
       => _landmarkDetector.face.VertexArray[index];
-
+    public static readonly int[] FACE_LANDMARK = new int[]
+    {
+        10, 297, 284, 389, 454, 361, 397, 378, 152, 149, 172, 132, 234, 162, 54, 67, 159, 157, 133, 154, 145, 163, 
+        33, 161, 386, 388, 263, 390, 374, 381, 362, 384, 12, 271, 291, 403, 15, 179, 61, 41, 164, //473, 468
+    };
     void RunPipeline(Texture input)
     {
         // Face detection
@@ -48,7 +52,12 @@ partial class FacePipeline
         var eye_l1   = _faceRegion.Transform(GetFaceVertex(133)).xy;
         var eye_r0   = _faceRegion.Transform(GetFaceVertex(362)).xy;
         var eye_r1   = _faceRegion.Transform(GetFaceVertex(263)).xy;
-
+        List<Vector2> face_landmark = new List<Vector2>();
+        for (int i = 0; i < FACE_LANDMARK.Length; i += 2)
+        {
+            int landmarkIndex = FACE_LANDMARK[i];
+            face_landmark.Add(GetFaceVertex(landmarkIndex).xy);
+        }
         // Eye region update
         _leyeRegion.Update(eye_l0, eye_l1, _faceRegion.RotationMatrix);
         _reyeRegion.Update(eye_r0, eye_r1, _faceRegion.RotationMatrix);
@@ -87,7 +96,7 @@ partial class FacePipeline
         post.SetFloat("_lpf_cutoff_min", 1.5f);
         post.SetFloat("_lpf_t_e", Time.deltaTime);
         post.Dispatch(2, 468 / 52, 1, 1);
-
+        
         // Face region update based on the postprocessed face mesh
         _faceRegion.Step
           (_computeBuffer.bbox.GetBoundingBoxData(), mid_eyes - mouth);

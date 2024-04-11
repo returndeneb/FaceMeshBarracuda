@@ -18,8 +18,8 @@ sealed class FaceRegion
 
     #region Internal state
 
-    Float4Filter _box = new Float4Filter(2, 1.5f);
-    FloatFilter _angle = new FloatFilter(1.3f, 1.5f);
+    Float4Filter _box = new(2, 1.5f);
+    FloatFilter _angle = new(1.3f, 1.5f);
 
     void UpdateMatrices()
     {
@@ -59,7 +59,7 @@ sealed class FaceRegion
         var angle = MathUtil.Angle(face.nose - face.mouth) - math.PI / 2;
 
         // Do nothing if the boxes overlap much.
-        var iou = BoundingBox.CalculateIOU(box, new BoundingBox(_box.Value));
+        var iou = BoundingBox.CalculateIou(box, new BoundingBox(_box.Value));
         if (iou > 0.5f) return;
 
         _angle = new FloatFilter(_angle, angle);
