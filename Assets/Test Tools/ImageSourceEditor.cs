@@ -18,12 +18,6 @@ sealed class ImageSourceEditor : Editor
 
     AutoProperty _sourceType;
 
-    AutoProperty _texture;
-    AutoProperty _textureUrl;
-
-    AutoProperty _video;
-    AutoProperty _videoUrl;
-
     AutoProperty _webcamName;
     AutoProperty _webcamResolution;
     AutoProperty _webcamFrameRate;
@@ -62,21 +56,7 @@ sealed class ImageSourceEditor : Editor
         EditorGUI.indentLevel++;
 
         var type = (ImageSource.SourceType)_sourceType.Target.enumValueIndex;
-
-        if (type == ImageSource.SourceType.Texture)
-        {
-            EditorGUILayout.PropertyField(_texture, Labels.Asset);
-            if (_texture.Target.objectReferenceValue == null)
-                EditorGUILayout.PropertyField(_textureUrl, Labels.URL);
-        }
-
-        if (type == ImageSource.SourceType.Video)
-        {
-            EditorGUILayout.PropertyField(_video, Labels.Asset);
-            if (_video.Target.objectReferenceValue == null)
-                EditorGUILayout.PropertyField(_videoUrl, Labels.URL);
-        }
-
+        
         if (type == ImageSource.SourceType.Webcam)
         {
             EditorGUILayout.BeginHorizontal();
