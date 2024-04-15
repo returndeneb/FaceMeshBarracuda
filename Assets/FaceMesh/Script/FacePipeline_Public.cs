@@ -1,5 +1,5 @@
-using UnityEngine;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace MediaPipe.FaceMesh {
 

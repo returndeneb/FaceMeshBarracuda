@@ -1,5 +1,6 @@
-using MediaPipe.BlazeFace;
+using BlazeFace;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace MediaPipe.FaceMesh {
 
@@ -44,7 +45,7 @@ sealed class FaceRegion
 
     public void Step(BoundingBox box, float2 up)
     {
-        var t_e = UnityEngine.Time.deltaTime;
+        var t_e = Time.deltaTime;
         var angle = MathUtil.Angle(up) - math.PI / 2;
 
         _box = _box.Next(AddPadding(box).AsFloat4, t_e);

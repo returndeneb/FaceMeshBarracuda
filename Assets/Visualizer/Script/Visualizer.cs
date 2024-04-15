@@ -1,22 +1,22 @@
+using MediaPipe.FaceMesh;
+using Test_Tools;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
-using Unity.Mathematics;
-using Klak.TestTools;
-using MediaPipe.FaceMesh;
 
 public sealed class Visualizer : MonoBehaviour
 {
     #region Editable attributes
 
-    [SerializeField] ImageSource _source = null;
+    [SerializeField] ImageSource _source;
     [Space]
-    [SerializeField] ResourceSet _resources = null;
-    [SerializeField] Shader _shader = null;
+    [SerializeField] ResourceSet _resources;
+    [SerializeField] Shader _shader;
     [Space]
-    [SerializeField] RawImage _mainUI = null;
-    [SerializeField] RawImage _faceUI = null;
-    [SerializeField] RawImage _leftEyeUI = null;
-    [SerializeField] RawImage _rightEyeUI = null;
+    [SerializeField] RawImage _mainUI;
+    [SerializeField] RawImage _faceUI;
+    [SerializeField] RawImage _leftEyeUI;
+    [SerializeField] RawImage _rightEyeUI;
 
     #endregion
 
@@ -74,14 +74,14 @@ public sealed class Visualizer : MonoBehaviour
         _material.SetMatrix("_XForm", fLE);
         _material.SetBuffer("_Vertices", _pipeline.RawLeftEyeVertexBuffer);
         _material.SetPass(3);
-        Graphics.DrawProceduralNow(MeshTopology.Lines, 64, 1);
+        Graphics.DrawProceduralNow(MeshTopology.Lines, 64);
 
         // Right eye
         var fRE = math.mul(fF, _pipeline.RightEyeCropMatrix);
         _material.SetMatrix("_XForm", fRE);
         _material.SetBuffer("_Vertices", _pipeline.RawRightEyeVertexBuffer);
         _material.SetPass(3);
-        Graphics.DrawProceduralNow(MeshTopology.Lines, 64, 1);
+        Graphics.DrawProceduralNow(MeshTopology.Lines, 64);
 
         // Debug views
         // Face mesh
@@ -95,14 +95,14 @@ public sealed class Visualizer : MonoBehaviour
         _material.SetMatrix("_XForm", dLE);
         _material.SetBuffer("_Vertices", _pipeline.RawLeftEyeVertexBuffer);
         _material.SetPass(3);
-        Graphics.DrawProceduralNow(MeshTopology.Lines, 64, 1);
+        Graphics.DrawProceduralNow(MeshTopology.Lines, 64);
 
         // Right eye
         var dRE = MathUtil.ScaleOffset(0.25f, math.float2(0.625f, 0f));
         _material.SetMatrix("_XForm", dRE);
         _material.SetBuffer("_Vertices", _pipeline.RawRightEyeVertexBuffer);
         _material.SetPass(3);
-        Graphics.DrawProceduralNow(MeshTopology.Lines, 64, 1);
+        Graphics.DrawProceduralNow(MeshTopology.Lines, 64);
     }
 
     #endregion

@@ -1,7 +1,7 @@
+using System;
+using NNUtils;
 using Unity.Barracuda;
 using UnityEngine;
-using Klak.NNUtils;
-using Klak.NNUtils.Extensions;
 
 namespace MediaPipe.Iris {
 
@@ -17,7 +17,7 @@ namespace MediaPipe.Iris {
 // You can use the extension methods defined in
 // EyeLandmarkDetectorExtensions.cs to get specific keypoints.
 //
-public sealed class EyeLandmarkDetector : System.IDisposable
+public sealed class EyeLandmarkDetector : IDisposable
 {
     #region Public methods/properties
 
@@ -37,7 +37,7 @@ public sealed class EyeLandmarkDetector : System.IDisposable
     public GraphicsBuffer VertexBuffer
       => _output;
 
-    public System.ReadOnlySpan<Vector4> VertexArray
+    public ReadOnlySpan<Vector4> VertexArray
       => _readCache.Cached;
 
     #endregion

@@ -1,19 +1,19 @@
+using System;
 using Unity.Barracuda;
 using UnityEngine;
-using Klak.NNUtils.Extensions;
 
 // Common image preprocessor for NN models
 
-namespace Klak.NNUtils {
+namespace NNUtils {
 
-public class ImagePreprocess : System.IDisposable
+public class ImagePreprocess : IDisposable
 {
     int _width, _height;
     bool _nchw;
     Tensor _tensor;
     ComputeTensorData _tensorData;
 
-    public Vector4 ColorCoeffs { get; set; } = new Vector4(-1, -1, -1, 2);
+    public Vector4 ColorCoeffs { get; set; } = new(-1, -1, -1, 2);
 
     public Tensor Tensor => _tensor;
 

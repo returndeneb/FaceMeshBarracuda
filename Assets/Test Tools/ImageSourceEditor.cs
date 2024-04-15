@@ -1,7 +1,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace Klak.TestTools {
+namespace Test_Tools {
 
 [CustomEditor(typeof(ImageSource))]
 sealed class ImageSourceEditor : Editor

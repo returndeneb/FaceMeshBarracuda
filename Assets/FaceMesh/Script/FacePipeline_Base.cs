@@ -1,7 +1,9 @@
-using MediaPipe.BlazeFace;
+using System;
+using BlazeFace;
 using MediaPipe.FaceLandmark;
 using MediaPipe.Iris;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace MediaPipe.FaceMesh {
 
@@ -9,7 +11,7 @@ namespace MediaPipe.FaceMesh {
 // Basic implementation of the face pipeline class
 //
 
-sealed partial class FacePipeline : System.IDisposable
+sealed partial class FacePipeline : IDisposable
 {
     #region Private objects
 

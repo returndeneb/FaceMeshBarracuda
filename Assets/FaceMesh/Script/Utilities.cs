@@ -1,5 +1,5 @@
-using UnityEngine;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace MediaPipe.FaceMesh {
 
@@ -35,7 +35,7 @@ static class MathUtil
     public static float4x4 CropMatrix(float angle, float2 scale, float2 offset)
       => Mul(float4x4.Translate(math.float3(offset, 0)),
              float4x4.Scale(math.float3(scale, 1)),
-             MathUtil.ZRotateAtCenter(angle));
+             ZRotateAtCenter(angle));
 
     public static float4x4 ScaleOffset(float2 scale, float2 offset)
       => math.mul(float4x4.Translate(math.float3(offset, 0)),

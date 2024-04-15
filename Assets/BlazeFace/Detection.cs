@@ -1,7 +1,7 @@
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-namespace MediaPipe.BlazeFace {
+namespace BlazeFace {
 
 //
 // Detection structure. The layout of this structure must be matched with
@@ -36,4 +36,4 @@ public readonly struct Detection
     public const int Max = 64;
 }
 
-} // namespace MediaPipe.BlazeFace
+} 

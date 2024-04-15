@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using UnityEngine;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace MediaPipe.FaceMesh {
 
@@ -18,8 +18,7 @@ partial class FacePipeline
     // Vertex retrieval from the face landmark detector
     float4 GetFaceVertex(int index)
       => _landmarkDetector.face.VertexArray[index];
-    public static readonly int[] FACE_LANDMARK = new int[]
-    {
+    public static readonly int[] FACE_LANDMARK = {
         10, 297, 284, 389, 454, 361, 397, 378, 152, 149, 172, 132, 234, 162, 54, 67, 159, 157, 133, 154, 145, 163, 
         33, 161, 386, 388, 263, 390, 374, 381, 362, 384, 12, 271, 291, 403, 15, 179, 61, 41, 164, //473, 468
     };

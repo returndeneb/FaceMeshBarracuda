@@ -1,14 +1,13 @@
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace Klak.TestTools {
+namespace Test_Tools {
 
 public sealed class ImageSource : MonoBehaviour
 {
     #region Public property
 
-    public Texture Texture => OutputBuffer;
-    public Vector2Int OutputResolution => _outputResolution;
+    public Texture Texture => texture;
 
     #endregion
 
@@ -20,18 +19,18 @@ public sealed class ImageSource : MonoBehaviour
 
     // Webcam options
     [SerializeField] string _webcamName = "";
-    [SerializeField] Vector2Int _webcamResolution = new Vector2Int(1920, 1080);
+    [SerializeField] Vector2Int _webcamResolution = new(1920, 1080);
     [SerializeField] int _webcamFrameRate = 30;
 
     // Output options
-    [SerializeField] RenderTexture _outputTexture = null;
-    [SerializeField] Vector2Int _outputResolution = new Vector2Int(1920, 1080);
+    [SerializeField] RenderTexture _outputTexture;
+    [SerializeField] Vector2Int _outputResolution = new(1024, 1024);
 
     #endregion
 
     #region Package asset reference
 
-    [SerializeField, HideInInspector] Shader _shader = null;
+    [SerializeField, HideInInspector] Shader _shader;
 
     #endregion
 
@@ -42,7 +41,7 @@ public sealed class ImageSource : MonoBehaviour
     Material _material;
     RenderTexture _buffer;
 
-    RenderTexture OutputBuffer
+    RenderTexture texture
       => _outputTexture != null ? _outputTexture : _buffer;
 
     // Blit a texture into the output buffer with aspect ratio compensation.
@@ -51,7 +50,7 @@ public sealed class ImageSource : MonoBehaviour
         if (source == null) return;
 
         var aspect1 = (float)source.width / source.height;
-        var aspect2 = (float)OutputBuffer.width / OutputBuffer.height;
+        var aspect2 = (float)texture.width / texture.height;
 
         var scale = new Vector2(aspect2 / aspect1, aspect1 / aspect2);
         scale = Vector2.Min(Vector2.one, scale);
@@ -59,7 +58,7 @@ public sealed class ImageSource : MonoBehaviour
 
         var offset = (Vector2.one - scale) / 2;
 
-        Graphics.Blit(source, OutputBuffer, scale, offset);
+        Graphics.Blit(source, texture, scale, offset);
     }
 
     #endregion
@@ -91,9 +90,9 @@ public sealed class ImageSource : MonoBehaviour
         // Run the card shader to generate a test card image.
         if (_sourceType == SourceType.Card)
         {
-            var dims = new Vector2(OutputBuffer.width, OutputBuffer.height);
+            var dims = new Vector2(texture.width, texture.height);
             _material.SetVector("_Resolution", dims);
-            Graphics.Blit(null, OutputBuffer, _material, 0);
+            Graphics.Blit(null, texture, _material, 0);
         }
     }
 

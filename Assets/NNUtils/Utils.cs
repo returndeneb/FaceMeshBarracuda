@@ -1,7 +1,7 @@
 using Unity.Barracuda;
 using UnityEngine;
 
-namespace Klak.NNUtils {
+namespace NNUtils {
 
 public static class RTUtil
 {
@@ -26,8 +26,8 @@ public static class RTUtil
 
 public static class BufferUtil
 {
-    public static unsafe GraphicsBuffer NewStructured<T>(int length) where T : unmanaged
-      => new GraphicsBuffer(GraphicsBuffer.Target.Structured, length, sizeof(T));
+    public static unsafe GraphicsBuffer NewStructured<T>(int length) where T : unmanaged =>
+        new(GraphicsBuffer.Target.Structured, length, sizeof(T));
 
     public static (Tensor, ComputeTensorData) NewTensor(TensorShape shape, string name)
     {

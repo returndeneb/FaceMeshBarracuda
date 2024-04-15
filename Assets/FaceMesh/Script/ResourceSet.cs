@@ -1,5 +1,4 @@
 using UnityEngine;
-using Unity.Barracuda;
 
 namespace MediaPipe.FaceMesh {
 
@@ -10,9 +9,9 @@ namespace MediaPipe.FaceMesh {
                  menuName = "ScriptableObjects/MediaPipe/FaceMesh/Resource Set")]
 public sealed class ResourceSet : ScriptableObject
 {
-    public MediaPipe.BlazeFace.ResourceSet blazeFace;
-    public MediaPipe.FaceLandmark.ResourceSet faceLandmark;
-    public MediaPipe.Iris.ResourceSet iris;
+    public global::BlazeFace.ResourceSet blazeFace;
+    public FaceLandmark.ResourceSet faceLandmark;
+    public Iris.ResourceSet iris;
 
     public Shader preprocessShader;
     public ComputeShader postprocessCompute;

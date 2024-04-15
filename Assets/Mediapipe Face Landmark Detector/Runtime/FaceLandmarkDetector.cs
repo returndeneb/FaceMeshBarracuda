@@ -1,14 +1,14 @@
+using System;
+using NNUtils;
 using Unity.Barracuda;
 using UnityEngine;
-using Klak.NNUtils;
-using Klak.NNUtils.Extensions;
 
 namespace MediaPipe.FaceLandmark {
 
 //
 // Face landmark detector class
 //
-public sealed class FaceLandmarkDetector : System.IDisposable
+public sealed class FaceLandmarkDetector : IDisposable
 {
     #region Public methods/properties
 
@@ -26,7 +26,7 @@ public sealed class FaceLandmarkDetector : System.IDisposable
     public GraphicsBuffer VertexBuffer
       => _output;
 
-    public System.ReadOnlySpan<Vector4> VertexArray
+    public ReadOnlySpan<Vector4> VertexArray
       => _readCache.Cached;
 
     #endregion

@@ -1,8 +1,8 @@
-using UnityEngine;
-using UnityEditor;
 using System.Reflection;
+using UnityEditor;
+using UnityEngine;
 
-namespace Klak.TestTools {
+namespace Test_Tools {
 
 // Simple string label with GUIContent
 struct Label
@@ -12,7 +12,7 @@ struct Label
     public static implicit operator GUIContent(Label label) => label._guiContent;
 
     public static implicit operator Label(string text)
-      => new Label { _guiContent = new GUIContent(text) };
+      => new() { _guiContent = new GUIContent(text) };
 }
 
 // Auto-scanning serialized property wrapper

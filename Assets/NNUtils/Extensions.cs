@@ -3,7 +3,7 @@ using UnityEngine;
 
 // Extension methods
 
-namespace Klak.NNUtils.Extensions {
+namespace NNUtils {
 
 public static class ComputeShaderExtensions
 {
@@ -35,7 +35,8 @@ public static class ModelInputExtensions
 #if BARRACUDA_4_0_0_OR_LATER
       => input.shape.ToTensorShape();
 #else
-      => new TensorShape(input.shape);
+        =>
+            new(input.shape);
 #endif
 }
 

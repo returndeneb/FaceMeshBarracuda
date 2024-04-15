@@ -1,14 +1,14 @@
+using System;
+using NNUtils;
 using Unity.Barracuda;
 using UnityEngine;
-using Klak.NNUtils;
-using Klak.NNUtils.Extensions;
 
-namespace MediaPipe.BlazeFace {
+namespace BlazeFace {
 
 //
 // Main face detector class
 //
-public sealed partial class FaceDetector : System.IDisposable
+public sealed class FaceDetector : IDisposable
 {
     #region Public methods/properties
 
@@ -21,7 +21,7 @@ public sealed partial class FaceDetector : System.IDisposable
     public void ProcessImage(Texture image, float threshold = 0.75f)
       => RunModel(image, threshold);
 
-    public System.ReadOnlySpan<Detection> Detections
+    public ReadOnlySpan<Detection> Detections
       => _readCache.Cached;
 
     public GraphicsBuffer DetectionBuffer
@@ -129,4 +129,4 @@ public sealed partial class FaceDetector : System.IDisposable
     #endregion
 }
 
-} // namespace MediaPipe.BlazeFace
+}
