@@ -2,7 +2,6 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 
 namespace BlazeFace {
-
 //
 // Detection structure. The layout of this structure must be matched with
 // the one defined in Common.hlsl.

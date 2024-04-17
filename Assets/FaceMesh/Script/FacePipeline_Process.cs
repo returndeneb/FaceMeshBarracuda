@@ -13,7 +13,7 @@ partial class FacePipeline
     // Face/eye region trackers
     FaceRegion _faceRegion = new();
     EyeRegion _leyeRegion = new();
-    EyeRegion _reyeRegion = new();
+    EyeRegion _reyeRegion = new(true);
     
     // Vertex retrieval from the face landmark detector
     float4 GetFaceVertex(int index)
