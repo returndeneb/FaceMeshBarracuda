@@ -1,6 +1,6 @@
 using System;
 using NNUtils;
-using Unity.Barracuda;
+using Unity.Sentis;
 using UnityEngine;
 
 namespace MediaPipe.Iris {
@@ -52,7 +52,7 @@ public sealed class EyeLandmarkDetector : IDisposable
     ImagePreprocess _preprocess;
     GraphicsBuffer _output;
     BufferReader<Vector4> _readCache;
-
+    
     void AllocateObjects(ResourceSet resources)
     {
         // NN model
@@ -60,8 +60,11 @@ public sealed class EyeLandmarkDetector : IDisposable
 
         // Private objects
         _resources = resources;
-        _worker = model.CreateWorker(WorkerFactory.Device.GPU);
-
+        // _worker = model.CreateWorker(WorkerFactory.Device.GPU);
+        
+        
+        
+        _worker = WorkerFactory.CreateWorker(BackendType.GPUCompute, ModelLoader.Load(resources.model));
         // Preprocessing buffer
         _preprocess = new ImagePreprocess(ImageSize, ImageSize, nchwFix: true);
 

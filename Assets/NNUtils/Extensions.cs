@@ -1,4 +1,4 @@
-using Unity.Barracuda;
+using Unity.Sentis;
 using UnityEngine;
 
 // Extension methods
@@ -22,22 +22,22 @@ public static class ComputeShaderExtensions
 public static class TensorShapeExtensions
 {
     public static int GetWidth(in this TensorShape shape)
-#if BARRACUDA_4_0_0_OR_LATER
+// #if SENTIS_4_0_0_OR_LATER
       => shape[1];
-#else
-      => shape.width;
-#endif
+// #else
+//       => shape.width;
+// #endif
 }
 
 public static class ModelInputExtensions
 {
     public static TensorShape GetTensorShape(in this Model.Input input)
-#if BARRACUDA_4_0_0_OR_LATER
+// #if BARRACUDA_4_0_0_OR_LATER
       => input.shape.ToTensorShape();
-#else
-        =>
-            new(input.shape);
-#endif
+// #else
+//         =>
+//             new(input.shape);
+// #endif
 }
 
 public static class IWorkerExtensions

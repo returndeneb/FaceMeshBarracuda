@@ -1,6 +1,6 @@
 using System;
 using NNUtils;
-using Unity.Barracuda;
+using Unity.Sentis;
 using UnityEngine;
 
 namespace MediaPipe.FaceLandmark {
@@ -41,16 +41,11 @@ public sealed class FaceLandmarkDetector : IDisposable
     ImagePreprocess _preprocess;
     GraphicsBuffer _output;
     BufferReader<Vector4> _readCache;
-
+    
     void AllocateObjects(ResourceSet resources)
     {
-        // NN model
-        var model = ModelLoader.Load(resources.model);
-
-        // Private objects
         _resources = resources;
-        _worker = model.CreateWorker(WorkerFactory.Device.GPU);
-
+        _worker = WorkerFactory.CreateWorker(BackendType.GPUCompute, ModelLoader.Load(resources.model));
         // Preprocessing buffer
         _preprocess = new ImagePreprocess(ImageSize, ImageSize, nchwFix: true);
 

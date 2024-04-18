@@ -1,6 +1,6 @@
 using System;
 using NNUtils;
-using Unity.Barracuda;
+using Unity.Sentis;
 using UnityEngine;
 
 namespace BlazeFace {
@@ -35,23 +35,18 @@ public sealed class FaceDetector : IDisposable
     #region Private objects
 
     ResourceSet _resources;
-    int _size;
+    int _size = 128;
     IWorker _worker;
     ImagePreprocess _preprocess;
     (GraphicsBuffer post1, GraphicsBuffer post2, GraphicsBuffer count) _output;
     CountedBufferReader<Detection> _readCache;
 
+    
     void AllocateObjects(ResourceSet resources)
     {
         _resources = resources;
-
-        // NN model
-        var model = ModelLoader.Load(_resources.model);
-        _size = model.inputs[0].GetTensorShape().GetWidth();
-
-        // GPU worker
-        _worker = model.CreateWorker(WorkerFactory.Device.GPU);
-
+        _worker = WorkerFactory.CreateWorker(BackendType.GPUCompute, ModelLoader.Load(resources.model));
+           
         // Preprocess
         _preprocess = new ImagePreprocess(_size, _size);
 
@@ -87,7 +82,7 @@ public sealed class FaceDetector : IDisposable
         // Reset the compute buffer counters.
         _output.post1.SetCounterValue(0);
         _output.post2.SetCounterValue(0);
-
+        
         // Preprocessing
         _preprocess.Dispatch(source, _resources.preprocess);
 

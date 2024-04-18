@@ -1,4 +1,4 @@
-using Unity.Barracuda;
+using Unity.Sentis;
 using UnityEngine;
 
 namespace NNUtils {
@@ -29,16 +29,16 @@ public static class BufferUtil
     public static unsafe GraphicsBuffer NewStructured<T>(int length) where T : unmanaged =>
         new(GraphicsBuffer.Target.Structured, length, sizeof(T));
 
-    public static (Tensor, ComputeTensorData) NewTensor(TensorShape shape, string name)
+    public static (Tensor, ComputeTensorData) NewTensor(TensorShape shape)
     {
-#if BARRACUDA_4_0_0_OR_LATER
-        var data = new ComputeTensorData(shape, name, false);
+// #if BARRACUDA_4_0_0_OR_LATER
+        var data = new ComputeTensorData(shape);
         var tensor = TensorFloat.Zeros(shape);
         tensor.AttachToDevice(data);
-#else
-        var data = new ComputeTensorData(shape, name, ComputeInfo.ChannelsOrder.NHWC, false);
-        var tensor = new Tensor(shape, data);
-#endif
+// #else
+//         var data = new ComputeTensorData(shape, name, ComputeInfo.ChannelsOrder.NHWC, false);
+//         var tensor = new Tensor(shape, data);
+// #endif
         return (tensor, data);
     }
 }

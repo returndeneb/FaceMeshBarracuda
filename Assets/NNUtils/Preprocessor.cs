@@ -1,5 +1,5 @@
 using System;
-using Unity.Barracuda;
+using Unity.Sentis;
 using UnityEngine;
 
 // Common image preprocessor for NN models
@@ -21,12 +21,12 @@ public class ImagePreprocess : IDisposable
     {
         _width = width;
         _height = height;
-#if BARRACUDA_4_0_0_OR_LATER
+// #if BARRACUDA_4_0_0_OR_LATER
         _nchw = nchwFix;
-#endif
+// #endif
         var shape = _nchw ? new TensorShape(1, 3, _height, _width) :
                             new TensorShape(1, _height, _width, 3);
-        (_tensor, _tensorData) = BufferUtil.NewTensor(shape, "preprocess");
+        (_tensor, _tensorData) = BufferUtil.NewTensor(shape);
     }
 
     public void Dispose()
@@ -44,6 +44,7 @@ public class ImagePreprocess : IDisposable
         compute.SetVector("ColorCoeffs", ColorCoeffs);
         compute.SetBool("InputIsLinear", QualitySettings.activeColorSpace == ColorSpace.Linear);
         compute.SetBool("OutputIsNCHW", _nchw);
+        
         compute.DispatchThreads(pass, _width, _height, 1);
     }
 }

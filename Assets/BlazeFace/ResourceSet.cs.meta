@@ -5,9 +5,9 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - model: {fileID: 5022602860645237092, guid: 584629da52784a24923c41b57743147f, type: 3}
-  - preprocess: {instanceID: 0}
-  - postprocess1: {instanceID: 0}
-  - postprocess2: {instanceID: 0}
+  - preprocess: {fileID: 7200000, guid: 065b9d2f5e685444881e88945bf0492b, type: 3}
+  - postprocess1: {fileID: 7200000, guid: cc4ec09971b285047b2fa0c28032f81a, type: 3}
+  - postprocess2: {fileID: 7200000, guid: f7150e2dd3c942a4591c89ba6420daf1, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
