@@ -1,5 +1,5 @@
 using System;
-using Unity.Barracuda;
+using Unity.Sentis;
 using UnityEngine;
 
 // Common image preprocessor for NN models
@@ -21,9 +21,7 @@ public class ImagePreprocess : IDisposable
     {
         _width = width;
         _height = height;
-#if BARRACUDA_4_0_0_OR_LATER
         _nchw = nchwFix;
-#endif
         var shape = _nchw ? new TensorShape(1, 3, _height, _width) :
                             new TensorShape(1, _height, _width, 3);
         (_tensor, _tensorData) = BufferUtil.NewTensor(shape, "preprocess");

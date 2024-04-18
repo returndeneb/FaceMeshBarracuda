@@ -1,4 +1,4 @@
-using Unity.Barracuda;
+using Unity.Sentis;
 using UnityEngine;
 
 namespace MediaPipe.FaceLandmark {
@@ -10,7 +10,7 @@ namespace MediaPipe.FaceLandmark {
                  menuName = "ScriptableObjects/MediaPipe/FaceLandmark Resource Set")]
 public sealed class ResourceSet : ScriptableObject
 {
-    public NNModel model;
+    public ModelAsset model;
     public ComputeShader preprocess;
     public ComputeShader postprocess;
 }

@@ -1,6 +1,6 @@
 using System;
 using NNUtils;
-using Unity.Barracuda;
+using Unity.Sentis;
 using UnityEngine;
 
 namespace BlazeFace {
@@ -50,7 +50,8 @@ public sealed class FaceDetector : IDisposable
         _size = model.inputs[0].GetTensorShape().GetWidth();
 
         // GPU worker
-        _worker = model.CreateWorker(WorkerFactory.Device.GPU);
+        // _worker = model.CreateWorker(WorkerFactory.Device.GPU);
+        _worker = WorkerFactory.CreateWorker(BackendType.GPUCompute, model);
 
         // Preprocess
         _preprocess = new ImagePreprocess(_size, _size);
