@@ -5,92 +5,36 @@ using UnityEngine;
 
 namespace BlazeFace {
 
-//
-// Main face detector class
-//
 public sealed class FaceDetector : IDisposable
 {
-    #region Public methods/properties
+    readonly ResourceSet _resources;
+    private ImagePreprocess _preprocess;
+    IWorker _worker;
+    (GraphicsBuffer post1, GraphicsBuffer post2, GraphicsBuffer count) _output;
+    readonly CountedBufferReader<Detection> _detection;
+    private int _size;
 
     public FaceDetector(ResourceSet resources)
-      => AllocateObjects(resources);
-
-    public void Dispose()
-      => DeallocateObjects();
-
-    public void ProcessImage(Texture image, float threshold = 0.75f)
-      => RunModel(image, threshold);
-
-    public ReadOnlySpan<Detection> Detections
-      => _readCache.Cached;
-
-    public GraphicsBuffer DetectionBuffer
-      => _output.post2;
-
-    public void SetIndirectDrawCount(GraphicsBuffer drawArgs)
-      => GraphicsBuffer.CopyCount(_output.post2, drawArgs, sizeof(uint));
-
-    #endregion
-
-    #region Private objects
-
-    ResourceSet _resources;
-    int _size;
-    IWorker _worker;
-    ImagePreprocess _preprocess;
-    (GraphicsBuffer post1, GraphicsBuffer post2, GraphicsBuffer count) _output;
-    CountedBufferReader<Detection> _readCache;
-
-    void AllocateObjects(ResourceSet resources)
     {
         _resources = resources;
-
-        // NN model
         var model = ModelLoader.Load(_resources.model);
         _size = model.inputs[0].GetTensorShape().GetWidth();
-
-        // GPU worker
-        // _worker = model.CreateWorker(WorkerFactory.Device.GPU);
         _worker = WorkerFactory.CreateWorker(BackendType.GPUCompute, model);
-
-        // Preprocess
         _preprocess = new ImagePreprocess(_size, _size);
-
-        // Output buffers
         _output.post1 = new GraphicsBuffer(GraphicsBuffer.Target.Append, Detection.Max, Detection.Size);
         _output.post2 = new GraphicsBuffer(GraphicsBuffer.Target.Append, Detection.Max, Detection.Size);
         _output.count = new GraphicsBuffer(GraphicsBuffer.Target.Raw, 1, sizeof(uint));
-
-        // Detection data read cache
-        _readCache = new CountedBufferReader<Detection>(_output.post2, _output.count, Detection.Max);
+        _detection = new CountedBufferReader<Detection>(_output.post2, _output.count, Detection.Max);
     }
-
-    void DeallocateObjects()
-    {
-        _worker?.Dispose();
-        _worker = null;
-
-        _preprocess?.Dispose();
-        _preprocess = null;
-
-        _output.post1?.Dispose();
-        _output.post2?.Dispose();
-        _output.count?.Dispose();
-        _output = (null, null, null);
-    }
-
-    #endregion
-
-    #region Neural network inference function
-
-    void RunModel(Texture source, float threshold)
+    
+    public void ProcessImage(Texture image, float threshold = 0.75f)
     {
         // Reset the compute buffer counters.
         _output.post1.SetCounterValue(0);
         _output.post2.SetCounterValue(0);
 
         // Preprocessing
-        _preprocess.Dispatch(source, _resources.preprocess);
+        _preprocess.Dispatch(image, _resources.preprocess);
 
         // Run the BlazeFace model.
         _worker.Execute(_preprocess.Tensor);
@@ -124,10 +68,26 @@ public sealed class FaceDetector : IDisposable
         GraphicsBuffer.CopyCount(_output.post2, _output.count, 0);
 
         // Cache data invalidation
-        _readCache.InvalidateCache();
+        _detection.InvalidateCache();
     }
 
-    #endregion
+    public void Dispose()
+    {
+        _worker?.Dispose();
+        _worker = null;
+
+        _preprocess?.Dispose();
+        _preprocess = null;
+
+        _output.post1?.Dispose();
+        _output.post2?.Dispose();
+        _output.count?.Dispose();
+        _output = (null, null, null);
+    }
+    
+    public ReadOnlySpan<Detection> Detections
+      => _detection.Cached;
+    
 }
 
 }
